@@ -72,6 +72,7 @@ jobs:
         cd Criterion
         meson setup builddir
         meson compile -C builddir
+        cd builddir
         meson install
         # Copy the built Criterion to the cache directory
         cp -r . ~/CriterionCache
