@@ -1,7 +1,7 @@
 // stack.c
 #include<stdio.h>
 
-#include "stack.h"
+#include "data_structures/stack.h"
 
 Stack* stack_create(DataType type) {
     Stack* stack = malloc(sizeof(Stack));

@@ -1,7 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include "data_structures/linked_list/llist.h"
+#include "data_structures/llist.h"
 #include "utils/data_types.h"
 
 typedef struct Stack Stack;

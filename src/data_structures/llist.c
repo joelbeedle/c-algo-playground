@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "llist.h"
+#include "data_structures/llist.h"
 
 // Function to create a node with data
 Node* createNode(DataType type, void* value, size_t size) {
@@ -60,8 +60,13 @@ LinkedList *llist_create(DataType type) {
             list->compareFunc = &compareStrings;
             list->dataSize = sizeof(char*);
             break;
+        case KVP:
+            list->printFunc=  &printKVP;
+            list->compareFunc = &compareKVP;
+            list->dataSize = sizeof(KeyValuePair);
+            break;
         default:
-            fprintf(stderr, "Error: unsupported data type\n");
+            fprintf(stderr, "Error: unsupported data type in list creation\n");
             free(list);
             exit(EXIT_FAILURE);
     }
@@ -100,9 +105,14 @@ void llist_append(LinkedList* list, void* data) {
 
 void llist_print(LinkedList* list) {
     Node* temp = list->head;
+    int isFirst = 1;
     while (temp != NULL) {
         // Use function pointer to print the data
+        if(!isFirst) {
+            printf(" -> ");
+        }
         list->printFunc(temp->data.data);
+        isFirst = 0;
         temp = temp->next;
     }
     printf("\n");
