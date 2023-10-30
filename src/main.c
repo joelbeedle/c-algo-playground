@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     char* str1 = "hello";
     char* str2 = "world";
     hmap_put(hm_strings, &arr[0], str1);
-    //hmap_put(hm_strings, &arr[1], &str2);
+    hmap_put(hm_strings, &arr[1], str2);
     char* result = hmap_get(hm_strings, &arr[0]);
     printf("%s\n", result);
     return 0;
