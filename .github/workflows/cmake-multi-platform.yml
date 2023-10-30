@@ -58,10 +58,11 @@ jobs:
       id: cache-criterion
       uses: actions/cache@v3
       with:
-        path: ~/CriterionCache
-        key: ${{ runner.os }}-criterion-${{ hashFiles('**/Criterion/**') }}
+        path: Criterion/builddir
+        key: windows-criterion-${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
         restore-keys: |
-          ${{ runner.os }}-criterion-
+          windows-criterion-${{ runner.os }}-
+
 
     - name: Install dependencies (Windows)
       if: matrix.os == 'windows-latest' && steps.cache-criterion.outputs.cache-hit != 'true'
@@ -74,9 +75,7 @@ jobs:
         meson compile -C builddir
         cd builddir
         meson install
-        # Copy the built Criterion to the cache directory
-        cp -r . ~/CriterionCache
-
+        
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
       id: strings
@@ -87,12 +86,12 @@ jobs:
     - name: Configure CMake (Windows)
       if: matrix.os == 'windows-latest'
       run: |
-        cmake -B ${{ steps.strings.outputs.build-output-dir }} \
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-        -DCRITERION_LIBRARY=${{ github.workspace }}/Criterion/builddir/src/libcriterion.a \
-        -DCRITERION_INCLUDE_DIR=${{ github.workspace }}/Criterion/include \
+        cmake -B ${{ steps.strings.outputs.build-output-dir }} `
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} `
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} `
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
+        -DCRITERION_LIBRARY=${{ github.workspace }}/Criterion/builddir/src/libcriterion.a `
+        -DCRITERION_INCLUDE_DIR=${{ github.workspace }}/Criterion/include `
         -S ${{ github.workspace }}
 
     - name: Configure CMake (Ubuntu)
