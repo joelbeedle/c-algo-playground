@@ -56,12 +56,10 @@ jobs:
     - name: Install dependencies (Windows)
       if: matrix.os == 'windows-latest'
       run: |
-        choco install cmake curl unzip
-        curl -L -o criterion.zip https://github.com/Snaipe/Criterion/releases/download/v2.3.3/criterion-v2.3.3-windows-x86_64.zip
-        unzip criterion.zip -d criterion
-        echo "CRITERION_DIR=${{ github.workspace }}/criterion" >> $GITHUB_ENV
-        echo "${{ github.workspace }}/criterion/include" >> $GITHUB_ENV
-        echo "${{ github.workspace }}/criterion/lib" >> $GITHUB_ENV
+        choco install meson ninja git python3
+        git clone --recursive https://github.com/Snaipe/Criterion.git
+        cd Criterion
+        meson install -C build
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
