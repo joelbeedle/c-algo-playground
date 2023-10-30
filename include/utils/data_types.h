@@ -5,10 +5,15 @@
 #include <string.h>
 
 // Enum to define the supported data types
-typedef enum { INT, FLOAT, STRING, KVP /*, other types as needed */ } DataType;
+typedef enum DataType {
+  INT,
+  FLOAT,
+  STRING,
+  KVP /*, other types as needed */
+} DataType;
 
 // Container for the data, associating a type with the generic data pointer
-typedef struct {
+typedef struct DataContainer {
   DataType type;
   void *data;
 } DataContainer;
