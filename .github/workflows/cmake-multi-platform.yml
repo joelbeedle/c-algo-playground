@@ -56,10 +56,10 @@ jobs:
       run: |
         git clone --recursive https://github.com/Snaipe/Criterion.git
         mkdir Criterion/build
-        cd Criterion/build
-        cmake ..
-        make
-        sudo make install
+        cd Criterion
+        cmake -B build
+        make -C build
+        sudo make -C build install
 
     - name: Set reusable strings
       id: strings
