@@ -1,7 +1,9 @@
-#include "data_structures/linked_list/llist.h"
+#include "data_structures/llist.h"
 #include <criterion/criterion.h>
 #include <criterion/logging.h>
 #include <stdlib.h>
+
+TestSuite(linked_list_tests);
 
 // Test for 'createNode' function
 Test(linked_list_tests, test_createNode) {

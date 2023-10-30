@@ -27,19 +27,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 20,
+				"line" : 15,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 21,
+				"line" : 16,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 22,
+				"line" : 17,
 				"parent" : 0
 			},
 			{
@@ -66,15 +66,7 @@
 			[
 				{
 					"backtrace" : 5,
-					"path" : "/Users/joelbeedle/c-data-algo/src"
-				},
-				{
-					"backtrace" : 2,
-					"path" : "/Users/joelbeedle/c-data-algo/src/data_structures"
-				},
-				{
-					"backtrace" : 3,
-					"path" : "/Users/joelbeedle/c-data-algo/src/utils"
+					"path" : "/Users/joelbeedle/c-data-algo/include"
 				}
 			],
 			"language" : "C",

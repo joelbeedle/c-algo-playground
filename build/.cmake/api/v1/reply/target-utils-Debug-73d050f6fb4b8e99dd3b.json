@@ -12,8 +12,7 @@
 		"commands" : 
 		[
 			"add_library",
-			"include_directories",
-			"target_include_directories"
+			"include_directories"
 		],
 		"files" : 
 		[
@@ -39,12 +38,6 @@
 				"file" : 1,
 				"line" : 10,
 				"parent" : 2
-			},
-			{
-				"command" : 2,
-				"file" : 0,
-				"line" : 18,
-				"parent" : 0
 			}
 		]
 	},
@@ -61,11 +54,7 @@
 			[
 				{
 					"backtrace" : 3,
-					"path" : "/Users/joelbeedle/c-data-algo/src"
-				},
-				{
-					"backtrace" : 4,
-					"path" : "/Users/joelbeedle/c-data-algo/src/utils"
+					"path" : "/Users/joelbeedle/c-data-algo/include"
 				}
 			],
 			"language" : "C",
