@@ -7,12 +7,12 @@
 typedef struct Stack Stack;
 
 struct Stack {
-    LinkedList* list;
+  LinkedList *list;
 };
 
-Stack* stack_create(DataType type);
-void stack_push(Stack* stack, void* data);
-void* stack_pop(Stack* stack);
-void* stack_peek(Stack* stack);
+Stack *stack_create(DataType type);
+void stack_push(Stack *stack, void *data);
+void *stack_pop(Stack *stack);
+void *stack_peek(Stack *stack);
 
 #endif // STACK_H
