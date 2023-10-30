@@ -65,6 +65,7 @@ CTestTestfile.cmake
 _deps
 .cache/*
 build/
+build/*
 
 # VSCode
 .vscode/*
