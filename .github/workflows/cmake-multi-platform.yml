@@ -53,8 +53,18 @@ jobs:
         sudo apt update
         sudo apt install -y cmake pkg-config libcriterion-dev
 
-    - name: Install dependencies (Windows)
+    - name: Cache Criterion build
       if: matrix.os == 'windows-latest'
+      id: cache-criterion
+      uses: actions/cache@v3
+      with:
+        path: ~/CriterionCache
+        key: ${{ runner.os }}-criterion-${{ hashFiles('**/Criterion/**') }}
+        restore-keys: |
+          ${{ runner.os }}-criterion-
+
+    - name: Install dependencies (Windows)
+      if: matrix.os == 'windows-latest' && steps.cache-criterion.outputs.cache-hit != 'true'
       run: |
         python -m pip install --upgrade pip
         python -m pip install meson ninja
@@ -62,7 +72,9 @@ jobs:
         cd Criterion
         meson setup builddir
         meson compile -C builddir
-        meson install -C builddir
+        meson install
+        # Copy the built Criterion to the cache directory
+        cp -r . ~/CriterionCache
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
@@ -70,7 +82,20 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-    - name: Configure CMake
+
+    - name: Configure CMake (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        cmake -B ${{ steps.strings.outputs.build-output-dir }} \
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+        -DCRITERION_LIBRARY=${{ github.workspace }}/Criterion/builddir/src/libcriterion.a \
+        -DCRITERION_INCLUDE_DIR=${{ github.workspace }}/Criterion/include \
+        -S ${{ github.workspace }}
+
+    - name: Configure CMake (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
@@ -79,6 +104,7 @@ jobs:
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -S ${{ github.workspace }}
+    
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
