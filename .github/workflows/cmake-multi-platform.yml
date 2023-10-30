@@ -60,7 +60,9 @@ jobs:
         python -m pip install meson ninja
         git clone --recursive https://github.com/Snaipe/Criterion.git
         cd Criterion
-        meson install -C build
+        meson setup builddir
+        meson compile -C builddir
+        meson install -C builddir
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
