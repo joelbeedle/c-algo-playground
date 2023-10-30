@@ -53,19 +53,18 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        
+    - name: Install dependencies for building Criterion
+      run: sudo apt-get update && sudo apt-get install -y cmake pkg-config libnanomsg-dev
 
-    - name: Install Criterion (Ubuntu)
-      if: matrix.os == 'ubuntu-latest'
+    - name: Clone and build Criterion
       run: |
-        sudo add-apt-repository ppa:snaipewastaken/ppa -y
-        sudo apt-get update
-        sudo apt-get install -y criterion-dev
-
-    - name: Download Criterion (Windows)
-      if: matrix.os == 'windows-latest'
-      run: |
-        Invoke-WebRequest -Uri https://github.com/Snaipe/Criterion/releases/download/v2.3.3/criterion-v2.3.3-windows-x86_64.zip -OutFile criterion.zip
-        Expand-Archive -Path criterion.zip -DestinationPath criterion
+        git clone --recursive https://github.com/Snaipe/Criterion.git
+        mkdir Criterion/build
+        cd Criterion/build
+        cmake ..
+        make
+        sudo make install
 
     - name: Configure CMake (Windows)
       if: matrix.os == 'windows-latest'
