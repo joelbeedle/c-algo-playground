@@ -15,5 +15,6 @@ int main(int argc, char *argv[]) {
   hmap_put(hm_strings, &arr[1], str2);
   char *result = hmap_get(hm_strings, &arr[0]);
   printf("%s\n", result);
+  hmap_free(hm_strings);
   return 0;
 }
