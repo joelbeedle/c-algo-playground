@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "data_structures/hashmap.h"
-#include "data_structures/llist.h"
+#include "data_structures/linkedlist.h"
 #include "data_structures/stack.h"
 
 int main(int argc, char *argv[]) {

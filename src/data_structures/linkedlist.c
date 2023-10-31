@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "data_structures/llist.h"
+#include "data_structures/linkedlist.h"
 
 // Function to create a node with data
 Node *createNode(DataType type, void *value, size_t size) {
