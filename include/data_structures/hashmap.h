@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "data_structures/llist.h"
+#include "data_structures/linkedlist.h"
 #include "utils/data_types.h"
 
 #define TABLE_SIZE 1000
