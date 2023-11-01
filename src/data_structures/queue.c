@@ -10,3 +10,10 @@ Queue *queue_create(DataType type) {
 void queue_enq(Queue *q, void *data) { llist_append(q->list, data); }
 
 void *queue_deq(Queue *q) { return llist_removefront(q->list); }
+
+void *queue_peek(Queue *q) { return q->list->head->data.data; }
+
+void queue_free(Queue *q) {
+  llist_free(q->list);
+  free(q);
+}
