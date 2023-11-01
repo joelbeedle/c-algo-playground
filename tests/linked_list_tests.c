@@ -9,7 +9,7 @@ TestSuite(linked_list_tests);
 Test(linked_list_tests, test_createNode) {
   DataType type = INT;
   int value = 123;
-  Node *result = createNode(type, &value, sizeof(value));
+  Node *result = node_create(type, &value, sizeof(value));
 
   cr_assert_not_null(result, "createNode returned NULL");
   cr_assert_eq(result->data.type, type, "Type mismatch in created node");
