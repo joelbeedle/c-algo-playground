@@ -1,6 +1,9 @@
 #ifndef STACK_H
 #define STACK_H
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "data_structures/linkedlist.h"
 #include "utils/data_types.h"
 

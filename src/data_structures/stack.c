@@ -1,6 +1,4 @@
 // stack.c
-#include <stdio.h>
-
 #include "data_structures/stack.h"
 
 Stack *stack_create(DataType type) {
@@ -10,7 +8,7 @@ Stack *stack_create(DataType type) {
 }
 
 void stack_push(Stack *stack, void *data) {
-  Node *temp = createNode(stack->list->type, data, stack->list->dataSize);
+  Node *temp = node_create(stack->list->type, data, stack->list->dataSize);
 
   if (!temp) {
     fprintf(stderr, "Error: stack overflow\n");
@@ -21,6 +19,7 @@ void stack_push(Stack *stack, void *data) {
   stack->list->head = temp;
 }
 
+// Pops the stack and returns the value of the popped node
 void *stack_pop(Stack *stack) {
   Node *temp;
 
@@ -31,10 +30,11 @@ void *stack_pop(Stack *stack) {
 
   temp = stack->list->head;
   stack->list->head = stack->list->head->next;
-  return temp;
+  return temp->data.data;
   free(temp);
 }
 
+// Returns the value of the element at the top of teh stack
 void *stack_peek(Stack *stack) {
   if (stack->list->head == NULL) {
     fprintf(stderr, "Error: stack underflow\n");

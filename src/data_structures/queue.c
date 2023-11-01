@@ -1,6 +1,4 @@
 // queue.c
-#include <stdio.h>
-
 #include "data_structures/queue.h"
 
 Queue *queue_create(DataType type) {

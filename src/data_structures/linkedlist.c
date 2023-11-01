@@ -1,21 +1,18 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+// linkedlist.c
 #include "data_structures/linkedlist.h"
 
 // Function to create a node with data
-Node *createNode(DataType type, void *value, size_t size) {
+Node *node_create(DataType type, void *value, size_t size) {
   if (value == NULL) {
     fprintf(stderr, "Null data error\n");
-    exit(-1);
+    exit(EXIT_FAILURE);
   }
 
   // Create the node
   Node *node = (Node *)malloc(sizeof(Node));
   if (!node) {
     fprintf(stderr, "Unable to allocate memory for node\n");
-    exit(-1);
+    exit(EXIT_FAILURE);
   }
 
   // Allocate memory and store the data
@@ -23,7 +20,7 @@ Node *createNode(DataType type, void *value, size_t size) {
   if (!node->data.data) {
     fprintf(stderr, "Unable to allocate memory for data\n");
     free(node);
-    exit(-1);
+    exit(EXIT_FAILURE);
   }
   memcpy(node->data.data, value, size);
   node->data.type = type; // Ensure the type is consistent
@@ -60,7 +57,7 @@ LinkedList *llist_create(DataType type) {
     list->compareFunc = &compareStrings;
     list->dataSize = sizeof(char *);
     break;
-  case KVP:
+  case KVP: // KeyValuePair - Used in HashMaps
     list->printFunc = &printKVP;
     list->compareFunc = &compareKVP;
     list->dataSize = sizeof(KeyValuePair);
@@ -73,24 +70,13 @@ LinkedList *llist_create(DataType type) {
   return list;
 }
 
-void llist_fromarr(LinkedList *list, void *data, int length) {
-  if (!data) {
-    fprintf(stderr, "Error: data is NULL\n");
-    return;
-  }
-  for (int i = 0; i < length; i++) {
-    void *item = (char *)data + i * list->dataSize;
-    llist_append(list, item);
-  }
-}
-
 void llist_append(LinkedList *list, void *data) {
   if (!data) {
     fprintf(stderr, "Error: data is NULL\n");
     return;
   }
 
-  Node *new_node = createNode(list->type, data, list->dataSize);
+  Node *new_node = node_create(list->type, data, list->dataSize);
   if (list->head == NULL) {
     list->head = new_node;
     return;
@@ -102,26 +88,21 @@ void llist_append(LinkedList *list, void *data) {
   }
   last->next = new_node;
 }
+void llist_fromarr(LinkedList *list, void *data, int length) {
+  if (!data) {
+    fprintf(stderr, "Error: data is NULL\n");
+    return;
+  }
+  for (int i = 0; i < length; i++) {
+    void *item = (char *)data + i * list->dataSize;
+    llist_append(list, item);
+  }
+}
 
 void *llist_removefront(LinkedList *list) {
   Node *temp = list->head;
   list->head = list->head->next;
   return temp->data.data;
-}
-
-void llist_print(LinkedList *list) {
-  Node *temp = list->head;
-  int isFirst = 1;
-  while (temp != NULL) {
-    // Use function pointer to print the data
-    if (!isFirst) {
-      printf(" -> ");
-    }
-    list->printFunc(temp->data.data);
-    isFirst = 0;
-    temp = temp->next;
-  }
-  printf("\n");
 }
 
 void llist_delete(LinkedList *list, void *data) {
@@ -150,6 +131,21 @@ void llist_delete(LinkedList *list, void *data) {
 
   free(temp->data.data);
   free(temp);
+}
+
+void llist_print(LinkedList *list) {
+  Node *temp = list->head;
+  int isFirst = 1;
+  while (temp != NULL) {
+    // Use function pointer to print the data
+    if (!isFirst) {
+      printf(" -> ");
+    }
+    list->printFunc(temp->data.data);
+    isFirst = 0;
+    temp = temp->next;
+  }
+  printf("\n");
 }
 
 void llist_free(LinkedList *list) {

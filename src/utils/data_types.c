@@ -1,5 +1,5 @@
+// data_types.c
 #include "utils/data_types.h"
-#include <stdio.h>
 
 // Implementation of functions declared in DataTypes.h
 

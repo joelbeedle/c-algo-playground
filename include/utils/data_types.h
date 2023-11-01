@@ -1,7 +1,7 @@
-// Guards to prevent multiple inclusion
 #ifndef DATA_TYPES_H
 #define DATA_TYPES_H
 
+#include <stdio.h>
 #include <string.h>
 
 // Enum to define the supported data types

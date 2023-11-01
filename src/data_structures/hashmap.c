@@ -1,3 +1,4 @@
+// hashmap.c
 #include "data_structures/hashmap.h"
 
 unsigned int hash(HashMap *hm, void *key) {

@@ -1,8 +1,11 @@
 #ifndef TLLIST_H
 #define TLLIST_H
 
-#include "utils/data_types.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "utils/data_types.h"
 
 typedef struct LinkedList LinkedList;
 
@@ -22,13 +25,13 @@ struct LinkedList {
       void *, void *); // Function pointer to the type-specific compare function
 };
 
+Node *node_create(DataType type, void *data, size_t dataSize);
 LinkedList *llist_create(DataType type);
 void llist_append(LinkedList *list, void *data);
-void *llist_removefront(LinkedList *list);
-void llist_print(LinkedList *list);
-void llist_delete(LinkedList *list, void *data);
 void llist_fromarr(LinkedList *list, void *data, int length);
+void *llist_removefront(LinkedList *list);
+void llist_delete(LinkedList *list, void *data);
+void llist_print(LinkedList *list);
 void llist_free(LinkedList *list);
-Node *createNode(DataType type, void *data, size_t dataSize);
 
 #endif // TLLIST_H
