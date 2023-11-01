@@ -88,6 +88,7 @@ void llist_append(LinkedList *list, void *data) {
   }
   last->next = new_node;
 }
+
 void llist_fromarr(LinkedList *list, void *data, int length) {
   if (!data) {
     fprintf(stderr, "Error: data is NULL\n");

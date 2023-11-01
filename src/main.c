@@ -16,7 +16,10 @@ int main(int argc, char *argv[]) {
   queue_enq(q, &arr[2]);
   int *data = queue_deq(q);
   int *data2 = queue_deq(q);
+  int *data3 = queue_peek(q);
 
   printf("%d\n", *data2);
+  printf("%d\n", *data3);
+  queue_free(q);
   return 0;
 }
