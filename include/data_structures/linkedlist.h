@@ -24,6 +24,7 @@ struct LinkedList {
 
 LinkedList *llist_create(DataType type);
 void llist_append(LinkedList *list, void *data);
+void *llist_removefront(LinkedList *list);
 void llist_print(LinkedList *list);
 void llist_delete(LinkedList *list, void *data);
 void llist_fromarr(LinkedList *list, void *data, int length);

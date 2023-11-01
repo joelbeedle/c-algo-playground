@@ -103,6 +103,12 @@ void llist_append(LinkedList *list, void *data) {
   last->next = new_node;
 }
 
+void *llist_removefront(LinkedList *list) {
+  Node *temp = list->head;
+  list->head = list->head->next;
+  return temp->data.data;
+}
+
 void llist_print(LinkedList *list) {
   Node *temp = list->head;
   int isFirst = 1;

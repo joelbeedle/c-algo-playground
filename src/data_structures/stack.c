@@ -31,6 +31,7 @@ void *stack_pop(Stack *stack) {
 
   temp = stack->list->head;
   stack->list->head = stack->list->head->next;
+  return temp;
   free(temp);
 }
 

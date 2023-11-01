@@ -3,18 +3,19 @@
 
 #include "data_structures/hashmap.h"
 #include "data_structures/linkedlist.h"
+#include "data_structures/queue.h"
 #include "data_structures/stack.h"
 
 int main(int argc, char *argv[]) {
   int arr[3] = {1, 2, 3};
 
-  HashMap *hm_strings = hmap_create(INT, STRING);
-  char *str1 = "hello";
-  char *str2 = "world";
-  hmap_put(hm_strings, &arr[0], str1);
-  hmap_put(hm_strings, &arr[1], str2);
-  char *result = hmap_get(hm_strings, &arr[0]);
-  printf("%s\n", result);
-  hmap_free(hm_strings);
+  Queue *q = queue_create(INT);
+  queue_enq(q, &arr[0]);
+  queue_enq(q, &arr[1]);
+  queue_enq(q, &arr[2]);
+  int *data = queue_deq(q);
+  int *data2 = queue_deq(q);
+
+  printf("%d\n", *data2);
   return 0;
 }
