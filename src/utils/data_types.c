@@ -57,6 +57,42 @@ void printKVP(void *data) {
   }
 }
 
+void printNode(void *data) {
+  Node *node = (Node *)data;
+  switch (node->data.type) {
+  case INT:
+    printInt(node->data.data);
+    break;
+  case FLOAT:
+    printFloat(node->data.data);
+    break;
+  case STRING:
+    printString(node->data.data);
+    break;
+  default:
+    printf("Unsupported data type\n");
+    break;
+  }
+}
+
+void printTreeNode(void *data) {
+  TreeNode *node = (TreeNode *)data;
+  switch (node->data.type) {
+  case INT:
+    printInt(node->data.data);
+    break;
+  case FLOAT:
+    printFloat(node->data.data);
+    break;
+  case STRING:
+    printString(node->data.data);
+    break;
+  default:
+    printf("Unsupported data type\n");
+    break;
+  }
+}
+
 int compareInts(void *a, void *b) {
   // Before comparing, ensure pointers are not NULL to avoid dereferencing NULL
   // pointers
@@ -125,6 +161,66 @@ int compareKVP(void *a, void *b) {
   }
 }
 
+int compareNode(void *a, void *b) {
+  Node *nodeA = (Node *)a;
+  Node *nodeB = (Node *)b;
+
+  if (nodeA->data.type == nodeB->data.type) {
+    int comparison = 0;
+    switch (nodeA->data.type) {
+    case INT:
+      comparison = compareInts(nodeA->data.data, nodeB->data.data);
+      break;
+    case FLOAT:
+      comparison = compareFloats(nodeA->data.data, nodeB->data.data);
+      break;
+    case STRING:
+      comparison = compareStrings(nodeA->data.data, nodeB->data.data);
+      break;
+    default:
+      printf("Unsupported data type");
+      return 0;
+    }
+    if (comparison == 0) {
+      return comparison;
+    } else {
+      return NULL;
+    }
+  } else {
+    return (int)(nodeA->data.type) - (int)(nodeB->data.type);
+  }
+}
+
+int compareTreeNode(void *a, void *b) {
+  TreeNode *nodeA = (TreeNode *)a;
+  TreeNode *nodeB = (TreeNode *)b;
+
+  if (nodeA->data.type == nodeB->data.type) {
+    int comparison = 0;
+    switch (nodeA->data.type) {
+    case INT:
+      comparison = compareInts(nodeA->data.data, nodeB->data.data);
+      break;
+    case FLOAT:
+      comparison = compareFloats(nodeA->data.data, nodeB->data.data);
+      break;
+    case STRING:
+      comparison = compareStrings(nodeA->data.data, nodeB->data.data);
+      break;
+    default:
+      printf("Unsupported data type");
+      return 0;
+    }
+    if (comparison == 0) {
+      return comparison;
+    } else {
+      return NULL;
+    }
+  } else {
+    return (int)(nodeA->data.type) - (int)(nodeB->data.type);
+  }
+}
+
 void set_function_ptrs(DataFuncPtrs *ptrs, DataType *type) {
   switch (*type) {
   case INT:
@@ -146,6 +242,16 @@ void set_function_ptrs(DataFuncPtrs *ptrs, DataType *type) {
     ptrs->print_func = &printKVP;
     ptrs->compare_func = &compareKVP;
     ptrs->size = sizeof(KeyValuePair);
+    break;
+  case NODE:
+    ptrs->print_func = &printNode;
+    ptrs->compare_func = &compareNode;
+    ptrs->size = sizeof(Node);
+    break;
+  case TREENODE:
+    ptrs->print_func = &printTreeNode;
+    ptrs->compare_func = &compareTreeNode;
+    ptrs->size = sizeof(TreeNode);
     break;
   default:
     fprintf(stderr, "Error: unsupported data type in list creation\n");
