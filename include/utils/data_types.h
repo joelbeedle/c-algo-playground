@@ -10,7 +10,9 @@ typedef enum DataType {
   INT,
   FLOAT,
   STRING,
-  KVP /*, other types as needed */
+  KVP,
+  NODE,
+  TREENODE,
 } DataType;
 
 // Container for the data, associating a type with the generic data pointer
@@ -25,6 +27,17 @@ typedef struct KeyValuePair {
   DataContainer value;
 } KeyValuePair;
 
+typedef struct Node {
+  DataContainer data; // Data with its type
+  struct Node *next;  // Pointer to the next node
+} Node;
+
+typedef struct TreeNode {
+  DataContainer data;
+  struct TreeNode *left;
+  struct TreeNode *right;
+} TreeNode;
+
 typedef struct DataFuncPtrs {
   size_t size; // size of the type  TODO: investigate moving this
   void (*print_func)(void *);
@@ -37,12 +50,16 @@ void printInt(void *data);
 void printFloat(void *data);
 void printString(void *data);
 void printKVP(void *data);
+void printNode(void *data);
+void printTreeNode(void *data);
 
 // Comparing Functions
 int compareInts(void *a, void *b);
 int compareFloats(void *a, void *b);
 int compareStrings(void *a, void *b);
 int compareKVP(void *a, void *b);
+int compareNode(void *a, void *b);
+int compareTreeNode(void *a, void *b);
 
 void set_function_ptrs(DataFuncPtrs *ptrs, DataType *type);
 
