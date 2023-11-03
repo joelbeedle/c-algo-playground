@@ -1,5 +1,6 @@
 // linkedlist.c
 #include "data_structures/linkedlist.h"
+#include "utils/data_types.h"
 
 // Function to create a node with data
 Node *node_create(DataType type, void *value, size_t size) {
@@ -39,34 +40,12 @@ LinkedList *llist_create(DataType type) {
 
   list->type = type;
   list->head = NULL;
+  list->funcs = malloc(sizeof(DataFuncPtrs));
 
   // Assign the type-specific functions and determine data size based on type
-  switch (type) {
-  case INT:
-    list->printFunc = &printInt;
-    list->compareFunc = &compareInts;
-    list->dataSize = sizeof(int);
-    break;
-  case FLOAT:
-    list->printFunc = &printFloat;
-    list->compareFunc = &compareFloats;
-    list->dataSize = sizeof(float);
-    break;
-  case STRING:
-    list->printFunc = &printString;
-    list->compareFunc = &compareStrings;
-    list->dataSize = sizeof(char *);
-    break;
-  case KVP: // KeyValuePair - Used in HashMaps
-    list->printFunc = &printKVP;
-    list->compareFunc = &compareKVP;
-    list->dataSize = sizeof(KeyValuePair);
-    break;
-  default:
-    fprintf(stderr, "Error: unsupported data type in list creation\n");
-    free(list);
-    exit(EXIT_FAILURE);
-  }
+  set_function_ptrs(list->funcs, &type);
+  list->dataSize = list->funcs->size;
+
   return list;
 }
 
@@ -113,14 +92,15 @@ void llist_delete(LinkedList *list, void *data) {
   Node *temp = list->head;
   Node *prev = NULL;
 
-  if (list->compareFunc(temp->data.data, data) == 0) {
+  if (list->funcs->compare_func(temp->data.data, data) == 0) {
     list->head = temp->next;
     free(temp->data.data);
     free(temp);
     return;
   }
 
-  while (temp != NULL && list->compareFunc(temp->data.data, data) != 0) {
+  while (temp != NULL &&
+         list->funcs->compare_func(temp->data.data, data) != 0) {
     prev = temp;
     temp = temp->next;
   }
@@ -142,7 +122,7 @@ void llist_print(LinkedList *list) {
     if (!isFirst) {
       printf(" -> ");
     }
-    list->printFunc(temp->data.data);
+    list->funcs->print_func(temp->data.data);
     isFirst = 0;
     temp = temp->next;
   }

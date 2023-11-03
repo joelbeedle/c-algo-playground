@@ -124,3 +124,31 @@ int compareKVP(void *a, void *b) {
     return (int)(kvpA->key.type) - (int)(kvpB->key.type);
   }
 }
+
+void set_function_ptrs(DataFuncPtrs *ptrs, DataType *type) {
+  switch (*type) {
+  case INT:
+    ptrs->print_func = &printInt;
+    ptrs->compare_func = &compareInts;
+    ptrs->size = sizeof(int);
+    break;
+  case FLOAT:
+    ptrs->print_func = &printFloat;
+    ptrs->compare_func = &compareFloats;
+    ptrs->size = sizeof(float);
+    break;
+  case STRING:
+    ptrs->print_func = &printString;
+    ptrs->compare_func = &compareStrings;
+    ptrs->size = sizeof(char *);
+    break;
+  case KVP: // KeyValuePair - Used in HashMaps
+    ptrs->print_func = &printKVP;
+    ptrs->compare_func = &compareKVP;
+    ptrs->size = sizeof(KeyValuePair);
+    break;
+  default:
+    fprintf(stderr, "Error: unsupported data type in list creation\n");
+    exit(EXIT_FAILURE);
+  }
+}

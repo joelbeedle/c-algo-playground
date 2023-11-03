@@ -6,23 +6,17 @@
 #include <string.h>
 
 #include "utils/data_types.h"
+#include "utils/nodes.h"
 
 typedef struct LinkedList LinkedList;
-
-typedef struct Node {
-  DataContainer data; // Data with its type
-  struct Node *next;  // Pointer to the next node
-} Node;
 
 // Definition of the linked list structure
 struct LinkedList {
   DataType type; // Type that the list is handling
   size_t dataSize;
   Node *head; // Head of the list
-  void (*printFunc)(
-      void *); // Function pointer to the type-specific print function
-  int (*compareFunc)(
-      void *, void *); // Function pointer to the type-specific compare function
+  DataFuncPtrs
+      *funcs; // struct of function pointers to the type-specific functions
 };
 
 Node *node_create(DataType type, void *data, size_t dataSize);
