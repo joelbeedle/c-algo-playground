@@ -6,19 +6,18 @@
 #include <string.h>
 #include <sys/wait.h>
 
+#include "data_structures/queue.h"
 #include "utils/data_types.h"
-#include "utils/nodes.h"
 
 typedef struct BinaryTree {
   DataType type;
-  TreeNode *left;
-  TreeNode *right;
+  TreeNode *root;
   DataFuncPtrs *funcs;
   int node_count;
 } BinaryTree;
 
 BinaryTree *binarytree_create(DataType type);
 TreeNode *treenode_create(DataType type, void *data, size_t data_size);
-void insertNode(BinaryTree *tree, TreeNode *node);
+void binarytree_insert(BinaryTree *tree, void *data);
 
 #endif // BINARY_TREE_H
