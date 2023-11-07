@@ -40,8 +40,8 @@ typedef struct TreeNode {
 
 typedef struct DataFuncPtrs {
   size_t size; // size of the type  TODO: investigate moving this
-  void (*print_func)(void *);
-  int (*compare_func)(void *, void *);
+  void (*print)(void *);
+  int (*compare)(void *, void *);
 } DataFuncPtrs;
 
 // Function declarations related to data types
@@ -57,9 +57,9 @@ void printTreeNode(void *data);
 int compareInts(void *a, void *b);
 int compareFloats(void *a, void *b);
 int compareStrings(void *a, void *b);
-int compareKVP(void *a, void *b);
-int compareNode(void *a, void *b);
-int compareTreeNode(void *a, void *b);
+int compareKVPs(void *a, void *b);
+int compareNodes(void *a, void *b);
+int compareTreeNodes(void *a, void *b);
 
 void set_function_ptrs(DataFuncPtrs *ptrs, DataType *type);
 

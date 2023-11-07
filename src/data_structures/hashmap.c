@@ -57,7 +57,7 @@ void hmap_put(HashMap *hm, void *key, void *value) {
   // TODO: add checks to ensure type safety
   while (current != NULL) {
     KeyValuePair *current_kv = (KeyValuePair *)current->data.data;
-    if (list->funcs->compare_func(current_kv->key.data, key) == 0) {
+    if (list->funcs->compare(current_kv->key.data, key) == 0) {
       // Key already exists, update value
       current_kv->value.data = value;
       current_kv->value.type = hm->val_type;
@@ -80,7 +80,7 @@ void *hmap_get(HashMap *hm, void *key) {
 
   while (current != NULL) {
     KeyValuePair *kv = (KeyValuePair *)current->data.data;
-    if (list->funcs->compare_func(&kvToFind, kv) == 0) {
+    if (list->funcs->compare(&kvToFind, kv) == 0) {
       return kv->value.data;
     }
     current = current->next;
@@ -100,7 +100,7 @@ void hmap_print(HashMap *hm) {
         if (!isFirstElement) {
           printf(", ");
         }
-        hm->table[i]->funcs->print_func(kv);
+        hm->table[i]->funcs->print(kv);
         isFirstElement = 0;
         current = current->next;
       }

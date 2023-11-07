@@ -6,7 +6,6 @@
 #include <string.h>
 
 #include "utils/data_types.h"
-#include "utils/nodes.h"
 
 typedef struct LinkedList LinkedList;
 

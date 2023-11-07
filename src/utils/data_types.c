@@ -153,7 +153,8 @@ int compareKVP(void *a, void *b) {
     if (keyComparison == 0) {
       return keyComparison; // Keys are the same
     } else {
-      return NULL; // Keys are different
+      fprintf(stderr, "Error: unsupported data type in kvp comparison\n");
+      exit(EXIT_FAILURE); // Keys are different
     }
   } else {
     // Keys are of different type, compare based on enum value
@@ -161,30 +162,41 @@ int compareKVP(void *a, void *b) {
   }
 }
 
+int type_comparison(DataContainer *a, DataContainer *b) {
+  int comparison;
+  if (a->type == b->type) {
+    comparison = 0;
+    switch (a->type) {
+    case INT:
+      comparison = compareInts(a->data, b->data);
+      break;
+    case FLOAT:
+      comparison = compareFloats(a->data, b->data);
+      break;
+    case STRING:
+      comparison = compareStrings(a->data, b->data);
+      break;
+    default:
+      printf("Unsupported data type");
+      comparison = NULL;
+      break;
+    }
+  }
+  return comparison;
+}
+
 int compareNode(void *a, void *b) {
   Node *nodeA = (Node *)a;
   Node *nodeB = (Node *)b;
 
   if (nodeA->data.type == nodeB->data.type) {
-    int comparison = 0;
-    switch (nodeA->data.type) {
-    case INT:
-      comparison = compareInts(nodeA->data.data, nodeB->data.data);
-      break;
-    case FLOAT:
-      comparison = compareFloats(nodeA->data.data, nodeB->data.data);
-      break;
-    case STRING:
-      comparison = compareStrings(nodeA->data.data, nodeB->data.data);
-      break;
-    default:
-      printf("Unsupported data type");
-      return 0;
-    }
+    int comparison = type_comparison(&nodeA->data, &nodeB->data);
+
     if (comparison == 0) {
       return comparison;
     } else {
-      return NULL;
+      fprintf(stderr, "Error: unsupported data type in node comparison\n");
+      exit(EXIT_FAILURE);
     }
   } else {
     return (int)(nodeA->data.type) - (int)(nodeB->data.type);
@@ -196,25 +208,13 @@ int compareTreeNode(void *a, void *b) {
   TreeNode *nodeB = (TreeNode *)b;
 
   if (nodeA->data.type == nodeB->data.type) {
-    int comparison = 0;
-    switch (nodeA->data.type) {
-    case INT:
-      comparison = compareInts(nodeA->data.data, nodeB->data.data);
-      break;
-    case FLOAT:
-      comparison = compareFloats(nodeA->data.data, nodeB->data.data);
-      break;
-    case STRING:
-      comparison = compareStrings(nodeA->data.data, nodeB->data.data);
-      break;
-    default:
-      printf("Unsupported data type");
-      return 0;
-    }
+    int comparison = type_comparison(&nodeA->data, &nodeB->data);
+
     if (comparison == 0) {
       return comparison;
     } else {
-      return NULL;
+      fprintf(stderr, "Error: unsupported data type in node comparison\n");
+      exit(EXIT_FAILURE);
     }
   } else {
     return (int)(nodeA->data.type) - (int)(nodeB->data.type);
@@ -224,33 +224,33 @@ int compareTreeNode(void *a, void *b) {
 void set_function_ptrs(DataFuncPtrs *ptrs, DataType *type) {
   switch (*type) {
   case INT:
-    ptrs->print_func = &printInt;
-    ptrs->compare_func = &compareInts;
+    ptrs->print = &printInt;
+    ptrs->compare = &compareInts;
     ptrs->size = sizeof(int);
     break;
   case FLOAT:
-    ptrs->print_func = &printFloat;
-    ptrs->compare_func = &compareFloats;
+    ptrs->print = &printFloat;
+    ptrs->compare = &compareFloats;
     ptrs->size = sizeof(float);
     break;
   case STRING:
-    ptrs->print_func = &printString;
-    ptrs->compare_func = &compareStrings;
+    ptrs->print = &printString;
+    ptrs->compare = &compareStrings;
     ptrs->size = sizeof(char *);
     break;
   case KVP: // KeyValuePair - Used in HashMaps
-    ptrs->print_func = &printKVP;
-    ptrs->compare_func = &compareKVP;
+    ptrs->print = &printKVP;
+    ptrs->compare = &compareKVP;
     ptrs->size = sizeof(KeyValuePair);
     break;
   case NODE:
-    ptrs->print_func = &printNode;
-    ptrs->compare_func = &compareNode;
+    ptrs->print = &printNode;
+    ptrs->compare = &compareNode;
     ptrs->size = sizeof(Node);
     break;
   case TREENODE:
-    ptrs->print_func = &printTreeNode;
-    ptrs->compare_func = &compareTreeNode;
+    ptrs->print = &printTreeNode;
+    ptrs->compare = &compareTreeNode;
     ptrs->size = sizeof(TreeNode);
     break;
   default:

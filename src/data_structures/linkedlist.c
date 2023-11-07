@@ -92,15 +92,14 @@ void llist_delete(LinkedList *list, void *data) {
   Node *temp = list->head;
   Node *prev = NULL;
 
-  if (list->funcs->compare_func(temp->data.data, data) == 0) {
+  if (list->funcs->compare(temp->data.data, data) == 0) {
     list->head = temp->next;
     free(temp->data.data);
     free(temp);
     return;
   }
 
-  while (temp != NULL &&
-         list->funcs->compare_func(temp->data.data, data) != 0) {
+  while (temp != NULL && list->funcs->compare(temp->data.data, data) != 0) {
     prev = temp;
     temp = temp->next;
   }
@@ -122,7 +121,7 @@ void llist_print(LinkedList *list) {
     if (!isFirst) {
       printf(" -> ");
     }
-    list->funcs->print_func(temp->data.data);
+    list->funcs->print(temp->data.data);
     isFirst = 0;
     temp = temp->next;
   }
